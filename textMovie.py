@@ -85,46 +85,46 @@ for block in blocks:
 ##        t = (tm1 + tp1) * .5
 ##        block['time'] = t
 
-for block in blocks:
-    print
-    if 'dialogue' in block:
-        print block['time'],
-        print "--------DIALOGUE--------"
-        for i in range(len(block['dialogue'])):
-            print block['linetime'][i], block['dialogue'][i]
-    if 'direction' in block:
-        print block['time'],
-        print "------DIRECTION--------"
-        for line in block['direction']:
-            print line
-print "\n" * 10
-
-if afile:
-    cmd = "xterm -e " + 'mplayer "' + afile + '"&'
+if not afile:
+    for block in blocks:
+        print
+        if 'dialogue' in block:
+            print block['time'],
+            print "--------DIALOGUE--------"
+            for i in range(len(block['dialogue'])):
+                print block['linetime'][i], block['dialogue'][i]
+        if 'direction' in block:
+            print block['time'],
+            print "------DIRECTION--------"
+            for line in block['direction']:
+                print line
+else:
+    cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
     os.system(cmd)
     time.sleep(1)
 
-print "---------------BEGIN------------------"
+    print "\n" * 60
+    print "---------------BEGIN------------------"
 
-T = time.time()
+    T = time.time()
 
-ix = 0
-while ix < len(blocks):
-    block = blocks[ix]
-    t = time.time() - T
-    if t >= block['time']:
-        print
-        ix += 1
-        if 'direction' in block:
-            print "------DIRECTION-----"
-            for line in block['direction']:
-                print line
-        if 'dialogue' in block:
-            print "------DIALOGUE-----"
-            for j in range(len(block['dialogue'])):
-                line = block['dialogue'][j]
-                while (time.time() - T) < block['linetime'][j]:
-                    time.sleep(.1)
-                print line
-    time.sleep(.1)
+    ix = 0
+    while ix < len(blocks):
+        block = blocks[ix]
+        t = time.time() - T
+        if t >= block['time']:
+            print
+            ix += 1
+            if 'direction' in block:
+                print "------DIRECTION-----"
+                for line in block['direction']:
+                    print line
+            if 'dialogue' in block:
+                print "------DIALOGUE-----"
+                for j in range(len(block['dialogue'])):
+                    line = block['dialogue'][j]
+                    while (time.time() - T) < block['linetime'][j]:
+                        time.sleep(.1)
+                    print line
+        time.sleep(.1)
