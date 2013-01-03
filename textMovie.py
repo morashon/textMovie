@@ -111,17 +111,17 @@ if not afile:
     for block in blocks:
         print
         if 'dialogue' in block:
-            print block['time'],
+            print "%.2f" % block['time'],
             print "--------DIALOGUE--------"
             for i in range(len(block['dialogue'])):
-                print block['linetime'][i], block['dialogue'][i]
+                print "%.2f" % block['linetime'][i], block['dialogue'][i]
         elif 'direction' in block:
-            print block['time'],
+            print "%.2f" % block['time'],
             print "------DIRECTION--------"
             for line in block['direction']:
                 print line
         elif 'timestamp' in block:
-            print block['time'],
+            print "%.2f" % block['time'],
             print "------TIMESTAMP--------"
             print block['timestamp']
         else:
@@ -131,7 +131,7 @@ else:
     cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
     os.system(cmd)
-    time.sleep(1)
+##    time.sleep(.1)
 
     print "\n" * 60
     print "---------------BEGIN------------------"
@@ -146,24 +146,24 @@ else:
             print
             ix += 1
             if 'direction' in block:
-                print block['time'],
+                print "%.2f" % block['time'],
                 print "------DIRECTION-----"
                 for line in block['direction']:
                     print line
             elif 'dialogue' in block:
-                print block['time'],
+                print "%.2f" % block['time'],
                 print "------DIALOGUE-----"
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
                     while (time.time() - T) < block['linetime'][j]:
                         time.sleep(.1)
-                    print block['linetime'][j], line
+                    print "%.2f" % block['linetime'][j], line
             elif 'timestamp' in block:
-                print block['time'],
+                print "%.2f" % block['time'],
                 print "------TIMESTAMP--------"
                 print block['timestamp']
             else:
-                print block['time'],
+                print "%.2f" % block['time'],
                 print "------UNKNOWN BLOCK TYPE-------"
                 print block
         time.sleep(.1)
