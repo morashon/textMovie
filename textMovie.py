@@ -52,14 +52,19 @@ for i in range(len(blocks)):
         nu['dialogue'] = block
     else:
         if block[0][0] == '{':
-            nu['timestamp'] = block
+            print "DEBUG:", block[0][1:-1]
+            key, value = block[0]   [1:-1].split('=')
+            if key == 'time':
+                nu['timestamp'] = float(value)
+            else:
+                print "unknown directive:", key
         else:
             nu['direction'] = block
     blocks[i] = nu
 
 #add beginning and end stamps
-blocks.insert(0, {'timestamp': [0.0]})
-blocks.append({'timestamp': [totime]})
+blocks.insert(0, {'timestamp': 0.0})
+blocks.append({'timestamp': totime})
 
 #compute length of dialogue in chars (later syls!)
 totchars = 0
@@ -74,11 +79,12 @@ print "total dialogue length:", totchars
 def nextTimestamp(blocks, ix):
     while 'timestamp' not in blocks[ix]:
         ix += 1
-    return blocks[ix]['timestamp'][0]
+    return blocks[ix]['timestamp']
     
 #compute times for each block & line
 t = 0.0
 t2 = nextTimestamp(blocks, 1)
+print "DEBUG t2:", t2
 mul = (t2 - t) / totchars
 for block in blocks:
     block['time'] = t
@@ -113,7 +119,7 @@ if not afile:
         if 'timestamp' in block:
             print block['time'],
             print "------TIMESTAMP--------"
-            print block['timestamp'][0]
+            print block['timestamp']
 else:
     cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
