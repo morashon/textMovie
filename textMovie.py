@@ -74,6 +74,15 @@ for block in blocks:
     if 'dialogue' in block:
         t += block['chars'] * mul
 
+#fix direction stamps to be interpolated
+for i in range(1, len(blocks)-1, 1):            #ignore first and last
+    block = blocks[i]
+    if 'direction' in block:
+        tm1 = blocks[i-1]['time']
+        tp1 = blocks[i+1]['time']
+        t = (tm1 + tp1) * .5
+        block['time'] = t
+
 for block in blocks:
     print
     if 'dialogue' in block:
