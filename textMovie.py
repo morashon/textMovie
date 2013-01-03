@@ -44,6 +44,20 @@ if len(block):
     blocks.append(block)
 
 for block in blocks:
-    print "------BLOCK--------"
+    print
+    if block[0][0] == '_':
+        print "--------DIALOGUE--------"
+    else:
+        print "------DIRECTION--------"
     for line in block:
         print line
+print
+
+#compute total dialogue in chars (later syls!)
+chars = 0
+for block in blocks:
+    if block[0][0] == '_':
+        for line in block:
+            chars += len(line)
+print "total dialogue:", chars
+
