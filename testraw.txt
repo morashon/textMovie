@@ -1,7 +1,5 @@
 Scene: private booth at a fancy restaurant
-
 Annai is already sitting in the booth; Thisone ports in.
-
 
 _Annai: Hey stranger.
  Come here often?

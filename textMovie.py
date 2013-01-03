@@ -16,14 +16,15 @@ stage directions.
 
 import os, sys, time
 
+afile = None
 try:
     tfile = sys.argv[1]
-    afile = sys.argv[2]
+    totime = float(sys.argv[2])
+    if len(sys.argv) > 3:
+        afile = sys.argv[3]
 except:
     print "textMovie.py textfile.txt time [audiofile.wav]"
     exit()
-
-print "synchronizing " + tfile + " and " + afile
 
 f = open(tfile)
 lines = f.readlines()
@@ -43,14 +44,6 @@ for line in lines:
 if len(block):
     blocks.append(block)
 
-#compute total dialogue in chars (later syls!)
-chars = 0
-for block in blocks:
-    if block[0][0] == '_':
-        for line in block:
-            chars += len(line)
-print "total dialogue:", chars
-
 #make each block an object
 for i in range(len(blocks)):
     block = blocks[i]
@@ -61,13 +54,35 @@ for i in range(len(blocks)):
         nu['direction'] = block
     blocks[i] = nu
 
+#compute length of dialogue in chars (later syls!)
+totchars = 0
+for block in blocks:
+    if 'dialogue' in block:
+        chars = 0
+        for line in block['dialogue']:
+            chars += len(line)
+        block['chars'] = chars
+        totchars += chars
+print "total dialogue length:", totchars
+
+#compute time stamps
+mul = totime / totchars #factor to multiply to get time
+print "mul factor:", mul
+t = 0.0
+for block in blocks:
+    block['time'] = t
+    if 'dialogue' in block:
+        t += block['chars'] * mul
+
 for block in blocks:
     print
     if 'dialogue' in block:
+        print block['time'],
         print "--------DIALOGUE--------"
         for line in block['dialogue']:
             print line
     if 'direction' in block:
+        print block['time'],
         print "------DIRECTION--------"
         for line in block['direction']:
             print line
