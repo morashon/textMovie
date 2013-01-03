@@ -77,13 +77,13 @@ for block in blocks:
             t += len(line) * mul
 
 #fix direction stamps to be interpolated
-for i in range(1, len(blocks)-1, 1):            #ignore first and last
-    block = blocks[i]
-    if 'direction' in block:
-        tm1 = blocks[i-1]['time']
-        tp1 = blocks[i+1]['time']
-        t = (tm1 + tp1) * .5
-        block['time'] = t
+##for i in range(1, len(blocks)-1, 1):            #ignore first and last
+##    block = blocks[i]
+##    if 'direction' in block:
+##        tm1 = blocks[i-1]['time']
+##        tp1 = blocks[i+1]['time']
+##        t = (tm1 + tp1) * .5
+##        block['time'] = t
 
 for block in blocks:
     print
@@ -97,6 +97,24 @@ for block in blocks:
         print "------DIRECTION--------"
         for line in block['direction']:
             print line
-print
+print "\n" * 10
+print "---------------BEGIN------------------"
 
+T = time.time()
 
+ix = 0
+while ix < len(blocks):
+    block = blocks[ix]
+    t = time.time() - T
+    if t >= block['time']:
+        print
+        ix += 1
+        if 'direction' in block:
+            print "------DIRECTION-----"
+            for line in block['direction']:
+                print line
+        if 'dialogue' in block:
+            print "------DIALOGUE-----"
+            for line in block['dialogue']:
+                print line
+    time.sleep(.1)
