@@ -61,7 +61,6 @@ for block in blocks:
         chars = 0
         for line in block['dialogue']:
             chars += len(line)
-        block['chars'] = chars
         totchars += chars
 print "total dialogue length:", totchars
 
@@ -76,7 +75,6 @@ for block in blocks:
         for line in block['dialogue']:
             block['linetime'].append(t)
             t += len(line) * mul
-##        t += block['chars'] * mul
 
 #fix direction stamps to be interpolated
 for i in range(1, len(blocks)-1, 1):            #ignore first and last
