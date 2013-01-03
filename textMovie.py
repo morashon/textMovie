@@ -72,7 +72,11 @@ t = 0.0
 for block in blocks:
     block['time'] = t
     if 'dialogue' in block:
-        t += block['chars'] * mul
+        block['linetime'] = []
+        for line in block['dialogue']:
+            block['linetime'].append(t)
+            t += len(line) * mul
+##        t += block['chars'] * mul
 
 #fix direction stamps to be interpolated
 for i in range(1, len(blocks)-1, 1):            #ignore first and last
@@ -88,8 +92,8 @@ for block in blocks:
     if 'dialogue' in block:
         print block['time'],
         print "--------DIALOGUE--------"
-        for line in block['dialogue']:
-            print line
+        for i in range(len(block['dialogue'])):
+            print block['linetime'][i], block['dialogue'][i]
     if 'direction' in block:
         print block['time'],
         print "------DIRECTION--------"
