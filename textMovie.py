@@ -98,6 +98,13 @@ for block in blocks:
         for line in block['direction']:
             print line
 print "\n" * 10
+
+if afile:
+    cmd = "xterm -e " + 'mplayer "' + afile + '"&'
+    print cmd
+    os.system(cmd)
+    time.sleep(1)
+
 print "---------------BEGIN------------------"
 
 T = time.time()
@@ -115,6 +122,9 @@ while ix < len(blocks):
                 print line
         if 'dialogue' in block:
             print "------DIALOGUE-----"
-            for line in block['dialogue']:
+            for j in range(len(block['dialogue'])):
+                line = block['dialogue'][j]
+                while (time.time() - T) < block['linetime'][j]:
+                    time.sleep(.1)
                 print line
     time.sleep(.1)
