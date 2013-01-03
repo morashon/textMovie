@@ -79,13 +79,23 @@ def nextTimestamp(blocks, ix):
 t = 0.0
 t2, chars = nextTimestamp(blocks, 1)
 mul = (t2 - t) / chars
-for block in blocks:
-    block['time'] = t
-    if 'dialogue' in block:
-        block['linetime'] = []
-        for line in block['dialogue']:
-            block['linetime'].append(t)
-            t += len(line) * mul
+for ix, block in enumerate(blocks):
+    if 'timestamp' in block:
+        if (t - block['timestamp']) > 0.0001:
+            print "ERROR -- timestamp mismatch:", t, block['timestamp']
+            exit()
+        t = block['timestamp']
+        block['time'] = t
+        if ix + 1 < len(blocks):                            #ignore last timestamp"
+            t2, chars = nextTimestamp(blocks, ix + 1)
+            mul = (t2 - t) / chars
+    else:
+        block['time'] = t
+        if 'dialogue' in block:
+            block['linetime'] = []
+            for line in block['dialogue']:
+                block['linetime'].append(t)
+                t += len(line) * mul
 
 #fix direction stamps to be interpolated
 ##for i in range(1, len(blocks)-1, 1):            #ignore first and last
