@@ -66,26 +66,19 @@ for i in range(len(blocks)):
 blocks.insert(0, {'timestamp': 0.0})
 blocks.append({'timestamp': totime})
 
-#compute length of dialogue in chars (later syls!)
-totchars = 0
-for block in blocks:
-    if 'dialogue' in block:
-        chars = 0
-        for line in block['dialogue']:
-            chars += len(line)
-        totchars += chars
-print "total dialogue length:", totchars
-
 def nextTimestamp(blocks, ix):
+    chars = 0
     while 'timestamp' not in blocks[ix]:
+        if 'dialogue' in blocks[ix]:
+            for line in blocks[ix]['dialogue']:
+                chars += len(line)
         ix += 1
-    return blocks[ix]['timestamp']
+    return blocks[ix]['timestamp'], chars
     
 #compute times for each block & line
 t = 0.0
-t2 = nextTimestamp(blocks, 1)
-print "DEBUG t2:", t2
-mul = (t2 - t) / totchars
+t2, chars = nextTimestamp(blocks, 1)
+mul = (t2 - t) / chars
 for block in blocks:
     block['time'] = t
     if 'dialogue' in block:
