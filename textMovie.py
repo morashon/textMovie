@@ -86,6 +86,7 @@ for ix, block in enumerate(blocks):
             exit()
         t = block['timestamp']
         block['time'] = t
+        block['timestamp'] = t
         if ix + 1 < len(blocks):                            #ignore last timestamp"
             t2, chars = nextTimestamp(blocks, ix + 1)
             mul = (t2 - t) / chars
@@ -114,15 +115,18 @@ if not afile:
             print "--------DIALOGUE--------"
             for i in range(len(block['dialogue'])):
                 print block['linetime'][i], block['dialogue'][i]
-        if 'direction' in block:
+        elif 'direction' in block:
             print block['time'],
             print "------DIRECTION--------"
             for line in block['direction']:
                 print line
-        if 'timestamp' in block:
+        elif 'timestamp' in block:
             print block['time'],
             print "------TIMESTAMP--------"
             print block['timestamp']
+        else:
+            print "------UNKNOWN BLOCK TYPE-------"
+            print block
 else:
     cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
@@ -142,14 +146,24 @@ else:
             print
             ix += 1
             if 'direction' in block:
+                print block['time'],
                 print "------DIRECTION-----"
                 for line in block['direction']:
                     print line
-            if 'dialogue' in block:
+            elif 'dialogue' in block:
+                print block['time'],
                 print "------DIALOGUE-----"
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
                     while (time.time() - T) < block['linetime'][j]:
                         time.sleep(.1)
-                    print line
+                    print block['linetime'][j], line
+            elif 'timestamp' in block:
+                print block['time'],
+                print "------TIMESTAMP--------"
+                print block['timestamp']
+            else:
+                print block['time'],
+                print "------UNKNOWN BLOCK TYPE-------"
+                print block
         time.sleep(.1)

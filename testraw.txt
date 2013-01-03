@@ -14,11 +14,11 @@ _Annai: Why here?
 _Thisone: I don't know.
  I want to talk about stuff.
  Paranoid I guess.
-
-{time=15.0}
 	
 _Annai: Oh.
  That's why you ordered a private booth.
+
+{time=15.0}
 
 _Thisone: I thought someone might have bugged my sim.
  Compromised my server.
