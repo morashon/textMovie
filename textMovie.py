@@ -71,10 +71,15 @@ for block in blocks:
         totchars += chars
 print "total dialogue length:", totchars
 
+def nextTimestamp(blocks, ix):
+    while 'timestamp' not in blocks[ix]:
+        ix += 1
+    return blocks[ix]['timestamp'][0]
+    
 #compute times for each block & line
-mul = totime / totchars #factor to multiply to get time
-print "mul factor:", mul
 t = 0.0
+t2 = nextTimestamp(blocks, 1)
+mul = (t2 - t) / totchars
 for block in blocks:
     block['time'] = t
     if 'dialogue' in block:
