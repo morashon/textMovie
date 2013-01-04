@@ -110,10 +110,15 @@ for i in range(len(blocks)):
 
     if block[0][0] == '_':
         nu['dialogue'] = block
+        if block[0] == "_":
+            block.pop(0)                                    #lonely underscore just means continue dialog
+        else:
+            block[0] = block[0][1:]                         #remove underscore, it underscores nothing
     else:
         nu['direction'] = block
     blocks[i] = nu
 
+print "LAST BLOCK:", blocks[-1]
 #add beginning and end stamps
 blocks.insert(0, {'timestamp': 0.0})
 if 'timestamp' not in blocks[-1]:
@@ -195,6 +200,7 @@ if PRINT:
         else:
             print "------UNKNOWN BLOCK TYPE-------"
             print block
+
 if SHOW:
     cmd = "clear; xterm -e " + 'mplayer "' + AUDIO + '"&'
     print cmd
@@ -223,8 +229,9 @@ if SHOW:
                 print "------DIALOGUE-----"
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    while (time.time() - T) < block['linetime'][j]:
-                        time.sleep(.1)
+                    if SHOW == "lines":
+                        while (time.time() - T) < block['linetime'][j]:
+                            time.sleep(.1)
                     print "%.2f" % block['linetime'][j], line
             elif 'timestamp' in block:
                 print "%.2f" % block['time'],
