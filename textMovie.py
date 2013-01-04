@@ -25,6 +25,7 @@ FONTHEIGHT = 24
 STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
+DEBUG = False
 
 i = 1
 while i < len(sys.argv):
@@ -81,16 +82,20 @@ if len(block):
 
 #make each block an object
 for i in range(len(blocks)):
+    if DEBUG:
+        print
+        for e in block:
+            print e
     block = blocks[i]
     nu = {}
     if block[0][0] == "{":
         key, value = block[0][1:-1].split('=')
         if key == 'nudge':
+            if len(block) <= 1:
+                print "ERROR - nudge directive must be at top of a block - block:", i, block
+                exit()
             nu['nudge'] = float(value)
             block.pop(0)                                    #a nudge modifies a block's time
-            if len(block) == 0:
-                print "ERROR - nudge directive must be at top of a block"
-                exit()
         elif key == 'time':
             nu['timestamp'] = float(value)
             blocks[i] = nu

@@ -1,8 +1,7 @@
 Scene: private booth at a fancy restaurant
 Annai is already sitting in the booth; Thisone ports in.
 
-{time=1.5}
-
+{nudge=3}
 second direction paragraph
 
 _Annai: Hey stranger.
@@ -10,6 +9,7 @@ _Annai: Hey stranger.
 
 _Thisone: Hi.
 
+{nudge=1.6}
 _Annai: Why here?
  Your place has been fun lately.
 
@@ -29,7 +29,6 @@ to jack without leaving a trail.
  Lately I feel like I'm being watched.
 
 {nudge=-1}
-
 random stage directions at around 25 sec
 
 _Annai: You probably are.
