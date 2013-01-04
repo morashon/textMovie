@@ -1,6 +1,8 @@
 Scene: private booth at a fancy restaurant
 Annai is already sitting in the booth; Thisone ports in.
 
+second direction paragraph
+
 _Annai: Hey stranger.
  Come here often?
 
@@ -42,4 +44,5 @@ _Thisone: (shudders) Ugh!
 
 _Annai: This is exciting! Like a spy vid!
 
+{time=45.7}
 

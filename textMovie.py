@@ -26,37 +26,40 @@ STALEDIR = 10
 DIRCOLOR = "#dddddd"
 AUDIO = None
 
-argv = [sys.argv[0]]
 i = 1
 while i < len(sys.argv):
     e = sys.argv[i]
-    if e[:1] == "-":
-        opt = e[1:]
-        if len(sys.argv) > i:                       #if there's a next arg
-            nxt = sys.argv[i+1]
+    if e[:1] != "-":
+        break
+    opt = e[1:]
+    if len(sys.argv) > i:                       #if there's a next arg
+        nxt = sys.argv[i+1]
+        try:
+            val = int(nxt)                          #and it's numeric, OK
+            i += 2
+        except:
             try:
-                val = int(nxt)                          #and it's numeric, OK
+                val = float(nxt)                    #or float
                 i += 2
             except:
-                try:
-                    val = float(nxt)                    #or float
+                if nxt[0:1] != '-':                 #or a non-option string
+                    val = nxt
                     i += 2
-                except:
-                    if nxt[0:1] != '_':                 #or a non-option string
-                        val = nxt
-                        i += 2
-                    else:
-                        val = True                      #otherwise assume flag; don't eat arg
-                        i += 1
+                else:
+                    val = True                      #otherwise assume flag; don't eat arg
+                    i += 1
 
-        print "setting", opt.upper(), "=", val
-        globals()[opt.upper()] = val
-    else:
-        argv.append(e)
+    print "setting", opt.upper(), "=", val
+    globals()[opt.upper()] = val
 
-f = open(SCRIPT)
-lines = f.readlines()
-f.close()
+exit()
+try:
+    f = open(SCRIPT)
+    lines = f.readlines()
+    f.close()
+except:
+    print "textMovie.py -script SCIPTNAME [-length SECONDS [-audio AUDIOFILE [-movie OUTPUTFILE]]]]"
+    exit()
 
 blocks = []
 block = []
@@ -80,7 +83,7 @@ for i in range(len(blocks)):
         nu['dialogue'] = block
     else:
         if block[0][0] == '{':
-            key, value = block[0]   [1:-1].split('=')
+            key, value = block[0][1:-1].split('=')
             if key == 'time':
                 nu['timestamp'] = float(value)
             else:
