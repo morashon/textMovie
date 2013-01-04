@@ -195,11 +195,15 @@ if MOVIE:
     #let's make a movie! yay, yippie!
     import cv, cv2, numpy, Image, ImageFont, ImageDraw
 
+    if afile:
+        ORIG = MOVIE
+        MOVIE = MOVIE[:-4] + "_V.avi"
+
     FOURCC = "DIVX"#"HFYU"
     F4CC = cv.CV_FOURCC(FOURCC[0], FOURCC[1], FOURCC[2], FOURCC[3])    
 
     cvw = cv2.VideoWriter()
-    cvw.open("test.avi", F4CC, FPS, (WIDTH, HEIGHT))
+    cvw.open(MOVIE, F4CC, FPS, (WIDTH, HEIGHT))
     print cvw
     if not cvw.isOpened():
         print "FAIL"
@@ -255,3 +259,8 @@ if MOVIE:
         frame += 1
 
     del cvw
+
+    if afile:
+        cmd = "ffmpeg -i " + afile + " -i " + MOVIE + " " + ORIG
+        print cmd
+        os.system(cmd)
