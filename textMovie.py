@@ -61,7 +61,7 @@ try:
 except:
     print "textMovie.py -option [VALUE]"
     print "required options: -script"
-    print "optional options: -audio FILENAME, -movie OUTPUTFILENAME, -length SECONDS, -print, -show"
+    print "optional options: -audio FILENAME, -movie OUTPUTFILENAME, -length SECONDS, -print, -show, -fps"
     exit()
 
 blocks = []
@@ -102,6 +102,8 @@ if 'timestamp' not in blocks[-1]:
         print "Need to specify -LENGTH or add a final timestamp"
         exit()
     blocks.append({'timestamp': LENGTH})
+else:
+    LENGTH = blocks[-1]['timestamp']
 
 def nextTimestamp(blocks, ix):
     chars = 0
