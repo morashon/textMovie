@@ -20,7 +20,7 @@ PRINT = False
 MOVIE = False
 WIDTH = 640
 HEIGHT = 480
-FPS = 30
+FPS = 24
 FONTHEIGHT = 24
 STALEDIR = 10
 DIRCOLOR = "#dddddd"
@@ -33,7 +33,10 @@ for e in sys.argv[1:]:
             try:
                 val = int(val)
             except:
-                pass
+                try:
+                    val = float(val)
+                except:           
+                    pass
         except:
             opt = e
             val = True
@@ -43,17 +46,17 @@ for e in sys.argv[1:]:
         argv.append(e)
 sys.argv = argv
 
-afile = None
+AUDIO = None
 try:
-    tfile = sys.argv[1]
-    totime = float(sys.argv[2])
+    SCRIPT = sys.argv[1]
+    LENGTH = float(sys.argv[2])
     if len(sys.argv) > 3:
-        afile = sys.argv[3]
+        AUDIO = sys.argv[3]
 except:
     print "textMovie.py textfile.txt time [audiofile.wav]"
-    exit()
+##    exit()
 
-f = open(tfile)
+f = open(SCRIPT)
 lines = f.readlines()
 f.close()
 
@@ -90,7 +93,11 @@ for i in range(len(blocks)):
 
 #add beginning and end stamps
 blocks.insert(0, {'timestamp': 0.0})
-blocks.append({'timestamp': totime})
+if 'timestamp' not in blocks[-1]:
+    if 'LENGTH' not in globals():
+        print "Need to specify -LENGTH or add a final timestamp"
+        exit()
+    blocks.append({'timestamp': LENGTH})
 
 def nextTimestamp(blocks, ix):
     chars = 0
@@ -154,7 +161,7 @@ if PRINT:
             print "------UNKNOWN BLOCK TYPE-------"
             print block
 if SHOW:
-    cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
+    cmd = "clear; xterm -e " + 'mplayer "' + AUDIO + '"&'
     print cmd
     os.system(cmd)
 ##    time.sleep(.1)
@@ -198,7 +205,7 @@ if MOVIE:
     #let's make a movie! yay, yippie!
     import cv, cv2, numpy, Image, ImageFont, ImageDraw
 
-    if afile:
+    if AUDIO:
         ORIG = MOVIE
         MOVIE = MOVIE[:-4] + "_V.avi"
 
@@ -220,7 +227,7 @@ if MOVIE:
     cv.SetData(cvim, pim.tostring())
     im = numpy.asarray(cvim[:,:])
 
-    frames = totime * FPS
+    frames = LENGTH * FPS
     ix = 0
     frame = 0
     lastdir = 0
@@ -254,11 +261,11 @@ if MOVIE:
 
     del cvw
 
-    if afile:
+    if AUDIO:
         cmd = "rm " + ORIG
         print cmd
         os.system(cmd)
-        cmd = "avconv -i " + afile + " -i " + MOVIE + " " + ORIG
+        cmd = "avconv -i " + AUDIO + " -i " + MOVIE + " " + ORIG
         print cmd
         os.system(cmd)
         cmd = "rm " + MOVIE
