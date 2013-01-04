@@ -22,6 +22,8 @@ WIDTH = 640
 HEIGHT = 480
 FPS = 30
 FONTHEIGHT = 24
+STALEDIR = 10
+DIRCOLOR = "#dddddd"
 
 argv = [sys.argv[0]]
 for e in sys.argv[1:]:
@@ -219,45 +221,34 @@ if MOVIE:
     im = numpy.asarray(cvim[:,:])
 
     frames = totime * FPS
-##    for i in range(frames):
-##        if i / FPS.0 == i/FPS:
-##            draw.rectangle((0,0,WIDTH,HEIGHT), fill="white")
-##            draw.text((20, i), "Hello fartypants", font=font, fill="black")
-##            cv.SetData(cvim, pim.tostring())
-##            print cvim
-##            im = numpy.asarray(cvim[:,:])
-##        cvw.write(im)
     ix = 0
     frame = 0
+    lastdir = 0
     while ix < len(blocks):
         block = blocks[ix]
         t = frame / float(FPS)
+        if t - lastdir > STALEDIR:                                  #erase directions after a bit
+            lastdir = 10000000
+            draw.rectangle((0,0,WIDTH,HEIGHT/2), fill=DIRCOLOR)
+            cv.SetData(cvim, pim.tostring())
+            im = numpy.asarray(cvim[:,:])
         if t >= block['time']:
             ix += 1
             if 'direction' in block:
-                draw.rectangle((0,0,WIDTH,HEIGHT/2), fill="#cccccc")
+                lastdir = t
+                draw.rectangle((0,0,WIDTH,HEIGHT/2), fill=DIRCOLOR)
                 for j in range(len(block['direction'])):
                     line = block['direction'][j]
                     draw.text((20, j * FONTHEIGHT), line, font=font, fill="black")
                 cv.SetData(cvim, pim.tostring())
                 im = numpy.asarray(cvim[:,:])
-            elif 'dialogue' in block:
+            if 'dialogue' in block:
                 draw.rectangle((0,HEIGHT/2,WIDTH,HEIGHT), fill="white")
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
                     draw.text((20, HEIGHT/2 + j * FONTHEIGHT), line, font=font, fill="black")
                 cv.SetData(cvim, pim.tostring())
                 im = numpy.asarray(cvim[:,:])
-                    
-            elif 'timestamp' in block:
-                pass
-##                print "%.2f" % block['time'],
-##                print "------TIMESTAMP--------"
-##                print block['timestamp']
-            else:
-                print "%.2f" % block['time'],
-                print "------UNKNOWN BLOCK TYPE-------"
-                print block
         cvw.write(im)
         frame += 1
 
