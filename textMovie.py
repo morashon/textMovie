@@ -153,6 +153,11 @@ for ix, block in enumerate(blocks):
                 block['linetime'].append(t + nudge)
                 t += len(line) * mul
 
+#re sort by time; nudge may have moved things to illogical places
+def key(x):
+    return x['time']            #never liked lambda
+blocks.sort(key=key)
+
 #fix direction stamps to be interpolated
 ##for i in range(1, len(blocks)-1, 1):            #ignore first and last
 ##    block = blocks[i]

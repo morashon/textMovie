@@ -10,9 +10,6 @@ _Annai: Hey stranger.
 
 _Thisone: Hi.
 
-Direction at 3.00
-	
-{nudge=5}
 _Annai: Why here?
  Your place has been fun lately.
 
@@ -31,7 +28,8 @@ sim. Compromised my server.
 to jack without leaving a trail.
  Lately I feel like I'm being watched.
 
-random stage directions?
+{nudge=-1}
+random stage directions at around 25 sec
 
 _Annai: You probably are.
  Nothing's private anymore.
