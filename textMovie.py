@@ -20,7 +20,8 @@ PRINT = False
 MOVIE = False
 WIDTH = 640
 HEIGHT = 480
-FPS = 15
+FPS = 30
+FONTHEIGHT = 24
 
 argv = [sys.argv[0]]
 for e in sys.argv[1:]:
@@ -199,7 +200,8 @@ if MOVIE:
         ORIG = MOVIE
         MOVIE = MOVIE[:-4] + "_V.avi"
 
-    FOURCC = "DIVX"#"HFYU"
+##    FOURCC = "DIVX"
+    FOURCC = "HFYU"
     F4CC = cv.CV_FOURCC(FOURCC[0], FOURCC[1], FOURCC[2], FOURCC[3])    
 
     cvw = cv2.VideoWriter()
@@ -236,14 +238,14 @@ if MOVIE:
                 draw.rectangle((0,0,WIDTH,HEIGHT/2), fill="#cccccc")
                 for j in range(len(block['direction'])):
                     line = block['direction'][j]
-                    draw.text((20, j * 20), line, font=font, fill="black")
+                    draw.text((20, j * FONTHEIGHT), line, font=font, fill="black")
                 cv.SetData(cvim, pim.tostring())
                 im = numpy.asarray(cvim[:,:])
             elif 'dialogue' in block:
                 draw.rectangle((0,HEIGHT/2,WIDTH,HEIGHT), fill="white")
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    draw.text((20, HEIGHT/2 + j * 20), line, font=font, fill="black")
+                    draw.text((20, HEIGHT/2 + j * FONTHEIGHT), line, font=font, fill="black")
                 cv.SetData(cvim, pim.tostring())
                 im = numpy.asarray(cvim[:,:])
                     
