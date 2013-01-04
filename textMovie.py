@@ -16,6 +16,11 @@ stage directions.
 
 import os, sys, time
 SHOW = False
+PRINT = False
+MOVIE = False
+WIDTH = 640
+HEIGHT = 480
+FPS = 15
 
 argv = [sys.argv[0]]
 for e in sys.argv[1:]:
@@ -29,7 +34,8 @@ for e in sys.argv[1:]:
         except:
             opt = e
             val = True
-            globals()[opt[2:].upper()] = val
+        print "setting", opt[2:].upper(), "=", val
+        globals()[opt[2:].upper()] = val
     else:
         argv.append(e)
 sys.argv = argv
@@ -124,7 +130,7 @@ for ix, block in enumerate(blocks):
 ##        t = (tm1 + tp1) * .5
 ##        block['time'] = t
 
-if not afile:
+if PRINT:
     for block in blocks:
         print
         if 'dialogue' in block:
@@ -144,7 +150,7 @@ if not afile:
         else:
             print "------UNKNOWN BLOCK TYPE-------"
             print block
-elif SHOW:
+if SHOW:
     cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
     os.system(cmd)
@@ -184,3 +190,68 @@ elif SHOW:
                 print "------UNKNOWN BLOCK TYPE-------"
                 print block
         time.sleep(.1)
+
+if MOVIE:
+    #let's make a movie! yay, yippie!
+    import cv, cv2, numpy, Image, ImageFont, ImageDraw
+
+    FOURCC = "DIVX"#"HFYU"
+    F4CC = cv.CV_FOURCC(FOURCC[0], FOURCC[1], FOURCC[2], FOURCC[3])    
+
+    cvw = cv2.VideoWriter()
+    cvw.open("test.avi", F4CC, FPS, (WIDTH, HEIGHT))
+    print cvw
+    if not cvw.isOpened():
+        print "FAIL"
+        exit()
+
+    font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 24)
+    pim = Image.new("RGB", (WIDTH, HEIGHT), (255,255,255))
+    draw = ImageDraw.Draw(pim)
+    cvim = cv.CreateImageHeader((WIDTH, HEIGHT), cv.IPL_DEPTH_8U, 3)
+    cv.SetData(cvim, pim.tostring())
+    im = numpy.asarray(cvim[:,:])
+
+    frames = totime * FPS
+##    for i in range(frames):
+##        if i / FPS.0 == i/FPS:
+##            draw.rectangle((0,0,WIDTH,HEIGHT), fill="white")
+##            draw.text((20, i), "Hello fartypants", font=font, fill="black")
+##            cv.SetData(cvim, pim.tostring())
+##            print cvim
+##            im = numpy.asarray(cvim[:,:])
+##        cvw.write(im)
+    ix = 0
+    frame = 0
+    while ix < len(blocks):
+        block = blocks[ix]
+        t = frame / float(FPS)
+        if t >= block['time']:
+            ix += 1
+            if 'direction' in block:
+                pass
+##                print "%.2f" % block['time'],
+##                print "------DIRECTION-----"
+##                for line in block['direction']:
+##                    print line
+            elif 'dialogue' in block:
+                draw.rectangle((0,0,WIDTH,HEIGHT), fill="white")
+                for j in range(len(block['dialogue'])):
+                    line = block['dialogue'][j]
+                    draw.text((20, j * 20), line, font=font, fill="black")
+                cv.SetData(cvim, pim.tostring())
+                im = numpy.asarray(cvim[:,:])
+                    
+            elif 'timestamp' in block:
+                pass
+##                print "%.2f" % block['time'],
+##                print "------TIMESTAMP--------"
+##                print block['timestamp']
+            else:
+                print "%.2f" % block['time'],
+                print "------UNKNOWN BLOCK TYPE-------"
+                print block
+        cvw.write(im)
+        frame += 1
+
+    del cvw
