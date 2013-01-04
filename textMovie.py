@@ -261,6 +261,9 @@ if MOVIE:
     del cvw
 
     if afile:
-        cmd = "ffmpeg -i " + afile + " -i " + MOVIE + " " + ORIG
+        cmd = "avconv -i " + afile + " -i " + MOVIE + " " + ORIG
+        print cmd
+        os.system(cmd)
+        cmd = "rm " + MOVIE
         print cmd
         os.system(cmd)
