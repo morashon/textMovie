@@ -246,8 +246,8 @@ if MOVIE:
         print "intermediate file:", MOVIE
         print "final output file:", ORIG
 
-##    FOURCC = "DIVX"
-    FOURCC = "HFYU"
+    FOURCC = "DIVX"
+##    FOURCC = "HFYU"
     F4CC = cv.CV_FOURCC(FOURCC[0], FOURCC[1], FOURCC[2], FOURCC[3])    
 
     cvw = cv2.VideoWriter()
