@@ -15,6 +15,24 @@ stage directions.
 """
 
 import os, sys, time
+SHOW = False
+
+argv = [sys.argv[0]]
+for e in sys.argv[1:]:
+    if e[:2] == "--":
+        try:
+            opt, val = e.split("=")
+            try:
+                val = int(val)
+            except:
+                pass
+        except:
+            opt = e
+            val = True
+            globals()[opt[2:].upper()] = val
+    else:
+        argv.append(e)
+sys.argv = argv
 
 afile = None
 try:
@@ -52,7 +70,6 @@ for i in range(len(blocks)):
         nu['dialogue'] = block
     else:
         if block[0][0] == '{':
-            print "DEBUG:", block[0][1:-1]
             key, value = block[0]   [1:-1].split('=')
             if key == 'time':
                 nu['timestamp'] = float(value)
@@ -127,7 +144,7 @@ if not afile:
         else:
             print "------UNKNOWN BLOCK TYPE-------"
             print block
-else:
+elif SHOW:
     cmd = "clear; xterm -e " + 'mplayer "' + afile + '"&'
     print cmd
     os.system(cmd)
