@@ -32,33 +32,36 @@ while i < len(sys.argv):
     if e[:1] != "-":
         break
     opt = e[1:]
-    if len(sys.argv) > i:                       #if there's a next arg
+    if len(sys.argv) > i+1:                     #if there's a next arg
         nxt = sys.argv[i+1]
+    else:
+        nxt = '-'                               #fake opt for flag at end
+    try:
+        val = int(nxt)                          #and it's numeric, OK
+        i += 2
+    except:
         try:
-            val = int(nxt)                          #and it's numeric, OK
+            val = float(nxt)                    #or float
             i += 2
         except:
-            try:
-                val = float(nxt)                    #or float
+            if nxt[0:1] != '-':                 #or a non-option string
+                val = nxt
                 i += 2
-            except:
-                if nxt[0:1] != '-':                 #or a non-option string
-                    val = nxt
-                    i += 2
-                else:
-                    val = True                      #otherwise assume flag; don't eat arg
-                    i += 1
+            else:
+                val = True                      #otherwise assume flag; don't eat arg
+                i += 1
 
     print "setting", opt.upper(), "=", val
     globals()[opt.upper()] = val
 
-exit()
 try:
     f = open(SCRIPT)
     lines = f.readlines()
     f.close()
 except:
-    print "textMovie.py -script SCIPTNAME [-length SECONDS [-audio AUDIOFILE [-movie OUTPUTFILE]]]]"
+    print "textMovie.py -option [VALUE]"
+    print "required options: -script"
+    print "optional options: -audio FILENAME, -movie OUTPUTFILENAME, -length SECONDS, -print, -show"
     exit()
 
 blocks = []
