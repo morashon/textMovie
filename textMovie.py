@@ -27,34 +27,32 @@ DIRCOLOR = "#dddddd"
 AUDIO = None
 
 argv = [sys.argv[0]]
-for e in sys.argv[1:]:
+i = 1
+while i < len(sys.argv):
+    e = sys.argv[i]
     if e[:1] == "-":
-        try:
-            opt, val = e.split("=")
+        opt = e[1:]
+        if len(sys.argv) > i:                       #if there's a next arg
+            nxt = sys.argv[i+1]
             try:
-                val = int(val)
+                val = int(nxt)                          #and it's numeric, OK
+                i += 2
             except:
                 try:
-                    val = float(val)
-                except:           
-                    pass
-        except:
-            opt = e
-            val = True
-        print "setting", opt[1:].upper(), "=", val
-        globals()[opt[1:].upper()] = val
+                    val = float(nxt)                    #or float
+                    i += 2
+                except:
+                    if nxt[0:1] != '_':                 #or a non-option string
+                        val = nxt
+                        i += 2
+                    else:
+                        val = True                      #otherwise assume flag; don't eat arg
+                        i += 1
+
+        print "setting", opt.upper(), "=", val
+        globals()[opt.upper()] = val
     else:
         argv.append(e)
-sys.argv = argv
-
-try:
-    SCRIPT = sys.argv[1]
-    LENGTH = float(sys.argv[2])
-    if len(sys.argv) > 3:
-        AUDIO = sys.argv[3]
-except:
-    print "textMovie.py textfile.txt time [audiofile.wav]"
-##    exit()
 
 f = open(SCRIPT)
 lines = f.readlines()
