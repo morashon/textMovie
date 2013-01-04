@@ -24,10 +24,11 @@ FPS = 24
 FONTHEIGHT = 24
 STALEDIR = 10
 DIRCOLOR = "#dddddd"
+AUDIO = None
 
 argv = [sys.argv[0]]
 for e in sys.argv[1:]:
-    if e[:2] == "--":
+    if e[:1] == "-":
         try:
             opt, val = e.split("=")
             try:
@@ -40,13 +41,12 @@ for e in sys.argv[1:]:
         except:
             opt = e
             val = True
-        print "setting", opt[2:].upper(), "=", val
-        globals()[opt[2:].upper()] = val
+        print "setting", opt[1:].upper(), "=", val
+        globals()[opt[1:].upper()] = val
     else:
         argv.append(e)
 sys.argv = argv
 
-AUDIO = None
 try:
     SCRIPT = sys.argv[1]
     LENGTH = float(sys.argv[2])
