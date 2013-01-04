@@ -88,6 +88,9 @@ for i in range(len(blocks)):
         if key == 'nudge':
             nu['nudge'] = float(value)
             block.pop(0)                                    #a nudge modifies a block's time
+            if len(block) == 0:
+                print "ERROR - nudge directive must be at top of a block"
+                exit()
         elif key == 'time':
             nu['timestamp'] = float(value)
             blocks[i] = nu
