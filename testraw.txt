@@ -1,6 +1,8 @@
 Scene: private booth at a fancy restaurant
 Annai is already sitting in the booth; Thisone ports in.
 
+{time=1.5}
+
 second direction paragraph
 
 _Annai: Hey stranger.
@@ -8,8 +10,9 @@ _Annai: Hey stranger.
 
 _Thisone: Hi.
 
-(After a little hesitation, he pecks her on the cheek)
-
+Direction at 3.00
+	
+{nudge=5}
 _Annai: Why here?
  Your place has been fun lately.
 

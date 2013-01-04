@@ -22,7 +22,7 @@ WIDTH = 640
 HEIGHT = 480
 FPS = 24
 FONTHEIGHT = 24
-STALEDIR = 10
+STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
 
@@ -62,6 +62,7 @@ except:
     print "textMovie.py -option [VALUE]"
     print "required options: -script"
     print "optional options: -audio FILENAME, -movie OUTPUTFILENAME, -length SECONDS, -print, -show, -fps"
+    print "in fact, any global var in caps can be set as an option, like STALEDIR, if you know what I mean"
     exit()
 
 blocks = []
@@ -82,17 +83,27 @@ if len(block):
 for i in range(len(blocks)):
     block = blocks[i]
     nu = {}
+    if block[0][0] == "{":
+        key, value = block[0][1:-1].split('=')
+        if key == 'nudge':
+            nu['nudge'] = float(value)
+            block.pop(0)                                    #a nudge modifies a block's time
+        elif key == 'time':
+            nu['timestamp'] = float(value)
+            blocks[i] = nu
+            if len(block) > 1:
+                print "ERROR -- time directive should be its own block:"
+                print block[1:]
+                exit()
+            continue                                        #timestamps are their own blocks
+        else:
+            print "ERROR: unknown directive:", key, value
+            exit()
+
     if block[0][0] == '_':
         nu['dialogue'] = block
     else:
-        if block[0][0] == '{':
-            key, value = block[0][1:-1].split('=')
-            if key == 'time':
-                nu['timestamp'] = float(value)
-            else:
-                print "unknown directive:", key
-        else:
-            nu['direction'] = block
+        nu['direction'] = block
     blocks[i] = nu
 
 #add beginning and end stamps
@@ -117,7 +128,8 @@ def nextTimestamp(blocks, ix):
 #compute times for each block & line
 t = 0.0
 t2, chars = nextTimestamp(blocks, 1)
-mul = (t2 - t) / chars
+if chars:
+    mul = (t2 - t) / chars
 for ix, block in enumerate(blocks):
     if 'timestamp' in block:
         if (t - block['timestamp']) > 0.0001:
@@ -128,13 +140,17 @@ for ix, block in enumerate(blocks):
         block['timestamp'] = t
         if ix + 1 < len(blocks):                            #ignore last timestamp"
             t2, chars = nextTimestamp(blocks, ix + 1)
-            mul = (t2 - t) / chars
+            if chars:
+                mul = (t2 - t) / chars                      #if chars==0, no dialog before next stamp
     else:
-        block['time'] = t
+        nudge = 0
+        if 'nudge' in block:
+            nudge = block['nudge']
+        block['time'] = t + nudge
         if 'dialogue' in block:
             block['linetime'] = []
             for line in block['dialogue']:
-                block['linetime'].append(t)
+                block['linetime'].append(t + nudge)
                 t += len(line) * mul
 
 #fix direction stamps to be interpolated
