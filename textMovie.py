@@ -233,16 +233,17 @@ if MOVIE:
         if t >= block['time']:
             ix += 1
             if 'direction' in block:
-                pass
-##                print "%.2f" % block['time'],
-##                print "------DIRECTION-----"
-##                for line in block['direction']:
-##                    print line
+                draw.rectangle((0,0,WIDTH,HEIGHT/2), fill="#cccccc")
+                for j in range(len(block['direction'])):
+                    line = block['direction'][j]
+                    draw.text((20, j * 20), line, font=font, fill="black")
+                cv.SetData(cvim, pim.tostring())
+                im = numpy.asarray(cvim[:,:])
             elif 'dialogue' in block:
-                draw.rectangle((0,0,WIDTH,HEIGHT), fill="white")
+                draw.rectangle((0,HEIGHT/2,WIDTH,HEIGHT), fill="white")
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    draw.text((20, j * 20), line, font=font, fill="black")
+                    draw.text((20, HEIGHT/2 + j * 20), line, font=font, fill="black")
                 cv.SetData(cvim, pim.tostring())
                 im = numpy.asarray(cvim[:,:])
                     
@@ -261,6 +262,9 @@ if MOVIE:
     del cvw
 
     if afile:
+        cmd = "rm " + ORIG
+        print cmd
+        os.system(cmd)
         cmd = "avconv -i " + afile + " -i " + MOVIE + " " + ORIG
         print cmd
         os.system(cmd)

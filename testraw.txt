@@ -20,8 +20,8 @@ _Annai: Oh.
 
 {time=15.0}
 
-_Thisone: I thought someone might have bugged my sim.
- Compromised my server.
+_Thisone: I thought someone might have bugged my 
+sim. Compromised my server.
  A place like this, picked at random, is harder 
 to jack without leaving a trail.
  Lately I feel like I'm being watched.
