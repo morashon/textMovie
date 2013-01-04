@@ -242,7 +242,9 @@ if MOVIE:
 
     if AUDIO:
         ORIG = MOVIE
-        MOVIE = MOVIE[:-4] + "_V.avi"
+        MOVIE = MOVIE[:MOVIE.rfind('.')] + "_V.avi"
+        print "intermediate file:", MOVIE
+        print "final output file:", ORIG
 
 ##    FOURCC = "DIVX"
     FOURCC = "HFYU"
