@@ -26,16 +26,22 @@ STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
-LINELENGTH = 10
+LINELENGTH = 15
 
 def splitLine(line):
+    words = line.split()
     s = ""
-    chars = len(line)
-    for i in range(0, chars, LINELENGTH):
-        s += line[i:i+LINELENGTH] + "\n"
-    return s
+    while len(words) > 0:
+        t = ""
+        while len(words) > 0 and len(t) < LINELENGTH:
+            if len(t) + len(words[0]) > LINELENGTH:
+                break
+            t += words.pop(0) + " "
+        s += t.rstrip() + "\n"
+    return s.rstrip()
+        
 
-print splitLine("abcdefghijkl mnop 1234567898765")
+print splitLine("ab cdef ghijkl mnop 1234567898765")
 print
 print
 exit()
