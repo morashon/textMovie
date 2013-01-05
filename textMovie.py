@@ -309,7 +309,7 @@ if MOVIE:
         cmd = "rm " + ORIG
         print cmd
         os.system(cmd)
-        cmd = "avconv -i " + AUDIO + " -i " + MOVIE + " -codec libmp3lame -ab 256k " + ORIG
+        cmd = "avconv -i " + AUDIO + " -i " + MOVIE + " -acodec libmp3lame -ab 256k " + ORIG
         print cmd
         os.system(cmd)
         cmd = "rm " + MOVIE
