@@ -21,7 +21,7 @@ MOVIE = False
 WIDTH = 640
 HEIGHT = 480
 FPS = 24
-FONTHEIGHT = 24
+FONTHEIGHT = 48
 STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
@@ -264,11 +264,12 @@ if MOVIE:
         print "FAIL"
         exit()
 
-    font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 24)
-    pim = Image.new("RGB", (WIDTH, HEIGHT), (255,255,255))
+    font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeSans.ttf", FONTHEIGHT)
+    pim = Image.new("RGB", (WIDTH*2, HEIGHT*2), (255,255,255))
     draw = ImageDraw.Draw(pim)
     cvim = cv.CreateImageHeader((WIDTH, HEIGHT), cv.IPL_DEPTH_8U, 3)
-    cv.SetData(cvim, pim.tostring())
+    pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
+    cv.SetData(cvim, pim2.tostring())
     im = numpy.asarray(cvim[:,:])
 
     frames = LENGTH * FPS
@@ -280,25 +281,28 @@ if MOVIE:
         t = frame / float(FPS)
         if t - lastdir > STALEDIR:                                  #erase directions after a bit
             lastdir = 10000000
-            draw.rectangle((0,0,WIDTH,HEIGHT/2), fill=DIRCOLOR)
-            cv.SetData(cvim, pim.tostring())
+            draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
+            pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
+            cv.SetData(cvim, pim2.tostring())
             im = numpy.asarray(cvim[:,:])
         if t >= block['time']:
             ix += 1
             if 'direction' in block:
                 lastdir = t
-                draw.rectangle((0,0,WIDTH,HEIGHT/2), fill=DIRCOLOR)
+                draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
                 for j in range(len(block['direction'])):
                     line = block['direction'][j]
                     draw.text((20, j * FONTHEIGHT), line, font=font, fill="black")
-                cv.SetData(cvim, pim.tostring())
+                pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
+                cv.SetData(cvim, pim2.tostring())
                 im = numpy.asarray(cvim[:,:])
             if 'dialogue' in block:
-                draw.rectangle((0,HEIGHT/2,WIDTH,HEIGHT), fill="white")
+                draw.rectangle((0,HEIGHT,WIDTH*2,HEIGHT*2), fill="white")
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    draw.text((20, HEIGHT/2 + j * FONTHEIGHT), line, font=font, fill="black")
-                cv.SetData(cvim, pim.tostring())
+                    draw.text((20, HEIGHT + j * FONTHEIGHT), line, font=font, fill="black")
+                pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
+                cv.SetData(cvim, pim2.tostring())
                 im = numpy.asarray(cvim[:,:])
         cvw.write(im)
         frame += 1
