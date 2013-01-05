@@ -16,6 +16,10 @@ _Thisone: I don't know. I want to talk about stuff. Paranoid I guess.
 _Annai: Oh.
  That's why you ordered a private booth.
 
+{nudge=-1}
+{hold=2}
+directionbbb
+
 {time=15.0}
 
 _Thisone: I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched.

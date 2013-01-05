@@ -112,6 +112,12 @@ for i in range(len(blocks)):
                 exit()
             nu['nudge'] = float(value)
             block.pop(0)                                    #a nudge modifies a block's time
+        elif key == 'hold':
+            if len(block) <= 1:
+                print "ERROR - holc directive must be at top of a block - block:", i, block
+                exit()
+            nu['hold'] = float(value)
+            block.pop(0)                                    #a nudge modifies a block's time
         elif key == 'time':
             nu['timestamp'] = float(value)
             blocks[i] = nu
@@ -295,10 +301,12 @@ if MOVIE:
     ix = 0
     frame = 0
     lastdir = 0
+    dirhold = STALEDIR
+    diahold = 999
     while ix < len(blocks):
         block = blocks[ix]
         t = frame / float(FPS)
-        if t - lastdir > STALEDIR:                                  #erase directions after a bit
+        if t - lastdir > dirhold:                                  #erase directions after a bit
             lastdir = 10000000
             draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
             pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
@@ -308,6 +316,10 @@ if MOVIE:
             ix += 1
             if 'direction' in block:
                 lastdir = t
+                if 'hold' in block:
+                    dirhold = block['hold']
+                else:
+                    dirhold = STALEDIR
                 draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
                 k = 0
                 for j in range(len(block['direction'])):
