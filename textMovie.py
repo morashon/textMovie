@@ -21,12 +21,12 @@ MOVIE = False
 WIDTH = 640
 HEIGHT = 480
 FPS = 24
-FONTHEIGHT = 48
-STALEDIR = 7
+FONTHEIGHT = 44
+STALEDIR = 10
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
-LINELENGTH = 53
+LINELENGTH = 58
 
 def splitLine(line):
     words = line.split()
@@ -104,7 +104,7 @@ for i in range(len(blocks)):
             print e
     block = blocks[i]
     nu = {}
-    if block[0][0] == "{":
+    while block[0][0] == "{":
         key, value = block[0][1:-1].split('=')
         if key == 'nudge':
             if len(block) <= 1:
@@ -119,10 +119,13 @@ for i in range(len(blocks)):
                 print "ERROR -- time directive should be its own block:"
                 print block[1:]
                 exit()
-            continue                                        #timestamps are their own blocks
+            break                                            #timestamps are their own blocks
         else:
             print "ERROR: unknown directive:", key, value
             exit()
+
+    if 'timestamp' in nu:
+        continue
 
     if block[0][0] == '_':
         nu['dialogue'] = block
