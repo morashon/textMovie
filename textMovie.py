@@ -26,7 +26,7 @@ STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
-LINELENGTH = 15
+LINELENGTH = 50
 
 def splitLine(line):
     words = line.split()
@@ -306,17 +306,25 @@ if MOVIE:
             if 'direction' in block:
                 lastdir = t
                 draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
+                k = 0
                 for j in range(len(block['direction'])):
                     line = block['direction'][j]
-                    draw.text((20, j * FONTHEIGHT), line, font=font, fill="black")
+                    lines = splitLine(line)
+                    for line in lines:
+                        draw.text((20, k * FONTHEIGHT), line, font=font, fill="black")
+                        k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
                 im = numpy.asarray(cvim[:,:])
             if 'dialogue' in block:
                 draw.rectangle((0,HEIGHT,WIDTH*2,HEIGHT*2), fill="white")
+                k = 0
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    draw.text((20, HEIGHT + j * FONTHEIGHT), line, font=font, fill="black")
+                    lines = splitLine(line)
+                    for line in lines:
+                        draw.text((20, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
+                        k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
                 im = numpy.asarray(cvim[:,:])
