@@ -26,6 +26,20 @@ STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
+LINELENGTH = 10
+
+def splitLine(line):
+    s = ""
+    chars = len(line)
+    for i in range(0, chars, LINELENGTH):
+        s += line[i:i+LINELENGTH] + "\n"
+    return s
+
+print splitLine("abcdefghijkl mnop 1234567898765")
+print
+print
+exit()
+
 
 i = 1
 while i < len(sys.argv):
