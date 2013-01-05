@@ -302,6 +302,7 @@ if MOVIE:
     frame = 0
     lastdir = 0
     dirhold = STALEDIR
+    lastdia = 0
     diahold = 999
     while ix < len(blocks):
         block = blocks[ix]
@@ -309,6 +310,12 @@ if MOVIE:
         if t - lastdir > dirhold:                                  #erase directions after a bit
             lastdir = 10000000
             draw.rectangle((0,0,WIDTH*2,HEIGHT), fill=DIRCOLOR)
+            pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
+            cv.SetData(cvim, pim2.tostring())
+            im = numpy.asarray(cvim[:,:])
+        if t - lastdia > diahold:                                  #erase dialogue after a bit more
+            lastdia = 10000000
+            draw.rectangle((0,HEIGHT,WIDTH*2,HEIGHT*2), fill="white")
             pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
             cv.SetData(cvim, pim2.tostring())
             im = numpy.asarray(cvim[:,:])
@@ -335,6 +342,11 @@ if MOVIE:
                 cv.SetData(cvim, pim2.tostring())
                 im = numpy.asarray(cvim[:,:])
             if 'dialogue' in block:
+                lastdia = t
+                if 'hold' in block:
+                    diahold = block['hold']
+                else:
+                    diahold = 999
                 draw.rectangle((0,HEIGHT,WIDTH*2,HEIGHT*2), fill="white")
                 k = 0
                 for j in range(len(block['dialogue'])):

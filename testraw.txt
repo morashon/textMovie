@@ -1,6 +1,7 @@
 Scene: private booth at a fancy restaurant. Annai is already sitting in the booth; Thisone ports in.
 
 {nudge=3}
+{hold=999}
 second direction paragraph
 
 _Annai: Hey stranger.
@@ -13,6 +14,7 @@ _Annai: Why here? Your place has been fun lately.
 
 _Thisone: I don't know. I want to talk about stuff. Paranoid I guess.
 	
+{hold=1.5}
 _Annai: Oh.
  That's why you ordered a private booth.
 
