@@ -29,9 +29,8 @@ DEBUG = False
 LINELENGTH = 15
 
 def splitLine(line):
-    crs = 0
     words = line.split()
-    s = ""
+    lines = []
     while len(words) > 0:
         t = ""
         while len(words) > 0 and len(t) < LINELENGTH:
@@ -41,17 +40,9 @@ def splitLine(line):
         if t == "":
             print "ERROR - splitLine failure"
             exit()
-        s += t.rstrip() + "\n"
-        crs += 1
-    return s.rstrip(), crs
+        lines.append(t.rstrip())
+    return lines
         
-
-print splitLine("ab cdef ghijkl mnop 1234567898765")
-print
-print
-exit()
-
-
 i = 1
 while i < len(sys.argv):
     e = sys.argv[i]
