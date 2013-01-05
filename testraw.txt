@@ -21,9 +21,9 @@ _Annai: Oh.
 _Thisone: I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched.
 
 
-_Thisone: I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched. I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched.
-_Thisone: I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched. I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched.
-
+_Thisone: I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack without leaving a trail. Lately I feel like I'm being watched. I thought someone might have bugged my sim. Compromised my server. A place like this, picked at random, is harder to jack
+AAA
+BBB
 
 {time=18.0}
 

@@ -26,7 +26,7 @@ STALEDIR = 7
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
-LINELENGTH = 50
+LINELENGTH = 53
 
 def splitLine(line):
     words = line.split()
@@ -311,6 +311,9 @@ if MOVIE:
                     line = block['direction'][j]
                     lines = splitLine(line)
                     for line in lines:
+                        if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
+                            print "ERROR -- too much text"
+                            exit()
                         draw.text((20, k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
@@ -323,6 +326,9 @@ if MOVIE:
                     line = block['dialogue'][j]
                     lines = splitLine(line)
                     for line in lines:
+                        if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
+                            print "ERROR -- too much text"
+                            exit()
                         draw.text((20, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
