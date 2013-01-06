@@ -100,6 +100,7 @@ if len(block):
     blocks.append(block)
 
 #make each block an object
+the_actor = None
 for i in range(len(blocks)):
     if DEBUG:
         print
@@ -143,10 +144,12 @@ for i in range(len(blocks)):
         else:
             brk = block[0].find(":")                        #first word followed by colon is actor name
             if brk >= 0:
-                nu['actor'] = block[0][1:brk].replace(':', '')
+                the_actor = block[0][1:brk].replace(':', '')
                 block[0] = block[0][brk+2:]
             else:                                           #just remove underscore
                 block[0] = block[0][1:]
+        if the_actor:
+            nu['actor'] = the_actor
     else:
         nu['direction'] = block
     blocks[i] = nu
@@ -262,6 +265,8 @@ if SHOW:
             elif 'dialogue' in block:
                 print "%.2f" % block['time'],
                 print "------DIALOGUE-----"
+                if 'actor' in block:
+                    print block['actor'] + ":"
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
                     if SHOW == "lines":
