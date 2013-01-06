@@ -22,6 +22,7 @@ WIDTH = 640
 HEIGHT = 480
 FPS = 24
 FONTHEIGHT = 44
+LEFTOFFSET = 20
 STALEDIR = 10
 DIRCOLOR = "#dddddd"
 AUDIO = None
@@ -35,8 +36,8 @@ def splitLine(line, draw, font):
     lines = []
     while len(words) > 0:
         t = ""
-        while len(words) > 0 and width(t) <= WIDTH*2:
-            if width(t + " " + words[0]) > WIDTH*2:
+        while len(words) > 0 and width(t) <= WIDTH*2-LEFTOFFSET:
+            if width(t + " " + words[0]) > WIDTH*2-LEFTOFFSET:
                 break
             t += words.pop(0) + " "
         if t == "":
@@ -344,7 +345,7 @@ if MOVIE:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
                             exit()
-                        draw.text((20, k * FONTHEIGHT), line, font=font, fill="black")
+                        draw.text((LEFTOFFSET, k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
@@ -364,7 +365,7 @@ if MOVIE:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
                             exit()
-                        draw.text((20, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
+                        draw.text((LEFTOFFSET, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
