@@ -141,11 +141,12 @@ for i in range(len(blocks)):
         if block[0] == "_":
             block.pop(0)                                    #lonely underscore just means continue dialog
         else:
-            brk = block[0].find(" ")                        #first word is actor name
-            if brk < 0:
-                brk = len(block[0])
-            nu['actor'] = block[0][1:brk].replace(':', '')
-            block[0] = block[0][brk:]
+            brk = block[0].find(":")                        #first word followed by colon is actor name
+            if brk >= 0:
+                nu['actor'] = block[0][1:brk].replace(':', '')
+                block[0] = block[0][brk+2:]
+            else:                                           #just remove underscore
+                block[0] = block[0][1:]
     else:
         nu['direction'] = block
     blocks[i] = nu
@@ -358,6 +359,9 @@ if MOVIE:
                     diahold = 999
                 draw.rectangle((0,HEIGHT,WIDTH*2,HEIGHT*2), fill="white")
                 k = 0
+                if 'actor' in block:
+                    draw.text((LEFTOFFSET, HEIGHT), block['actor'] + ':', font=font, fill="#0000ff")
+                    k = 1
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
                     lines = splitLine(line, draw, font)
