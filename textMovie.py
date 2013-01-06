@@ -114,7 +114,7 @@ for i in range(len(blocks)):
             block.pop(0)                                    #a nudge modifies a block's time
         elif key == 'hold':
             if len(block) <= 1:
-                print "ERROR - holc directive must be at top of a block - block:", i, block
+                print "ERROR - hold directive must be at top of a block - block:", i, block
                 exit()
             nu['hold'] = float(value)
             block.pop(0)                                    #a nudge modifies a block's time
