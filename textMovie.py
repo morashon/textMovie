@@ -140,7 +140,11 @@ for i in range(len(blocks)):
         if block[0] == "_":
             block.pop(0)                                    #lonely underscore just means continue dialog
         else:
-            block[0] = block[0][1:]                         #remove underscore, it underscores nothing
+            brk = block[0].find(" ")                        #first word is actor name
+            if brk < 0:
+                brk = len(block[0])
+            nu['actor'] = block[0][1:brk].replace(':', '')
+            block[0] = block[0][brk:]
     else:
         nu['direction'] = block
     blocks[i] = nu
@@ -213,6 +217,8 @@ if PRINT:
         if 'dialogue' in block:
             print "%.2f" % block['time'],
             print "--------DIALOGUE--------"
+            if 'actor' in block:
+                print block['actor'] + ":"
             for i in range(len(block['dialogue'])):
                 print "%.2f" % block['linetime'][i], block['dialogue'][i]
         elif 'direction' in block:
