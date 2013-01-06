@@ -26,15 +26,17 @@ STALEDIR = 10
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
-LINELENGTH = 58
 
-def splitLine(line):
+def splitLine(line, draw, font):
+    def width(s):
+        w, h = draw.textsize(s, font=font)
+        return w
     words = line.split()
     lines = []
     while len(words) > 0:
         t = ""
-        while len(words) > 0 and len(t) < LINELENGTH:
-            if len(t) + len(words[0]) > LINELENGTH:
+        while len(words) > 0 and width(t) <= WIDTH*2:
+            if width(t + " " + words[0]) > WIDTH*2:
                 break
             t += words.pop(0) + " "
         if t == "":
@@ -42,7 +44,7 @@ def splitLine(line):
             exit()
         lines.append(t.rstrip())
     return lines
-        
+
 i = 1
 while i < len(sys.argv):
     e = sys.argv[i]
@@ -331,7 +333,7 @@ if MOVIE:
                 k = 0
                 for j in range(len(block['direction'])):
                     line = block['direction'][j]
-                    lines = splitLine(line)
+                    lines = splitLine(line, draw, font)
                     for line in lines:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
@@ -351,7 +353,7 @@ if MOVIE:
                 k = 0
                 for j in range(len(block['dialogue'])):
                     line = block['dialogue'][j]
-                    lines = splitLine(line)
+                    lines = splitLine(line, draw, font)
                     for line in lines:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
