@@ -27,6 +27,7 @@ STALEDIR = 10
 DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
+LINEPAUSE = 0.4
 
 def splitLine(line, draw, font):
     def width(s):
@@ -45,6 +46,13 @@ def splitLine(line, draw, font):
             exit()
         lines.append(t.rstrip())
     return lines
+
+def cleanAscii(s):
+    t = ''
+    for c in s:
+        if ord(c) < 128:
+            t += c
+    return t
 
 i = 1
 while i < len(sys.argv):
@@ -90,6 +98,7 @@ block = []
 
 for line in lines:
     line = line.strip()
+    line = cleanAscii(line)
     if line != "":
         block.append(line)
     else:
@@ -145,6 +154,8 @@ for i in range(len(blocks)):
             brk = block[0].find(":")                        #first word followed by colon is actor name
             if brk >= 0:
                 the_actor = block[0][1:brk].replace(':', '')
+                if the_actor == "NOACTOR":
+                    the_actor = None
                 block[0] = block[0][brk+2:]
             else:                                           #just remove underscore
                 block[0] = block[0][1:]
@@ -154,8 +165,8 @@ for i in range(len(blocks)):
         nu['direction'] = block
     blocks[i] = nu
 
-print "LAST BLOCK:", blocks[-1]
 #add beginning and end stamps
+print "LAST BLOCK:", blocks[-1]
 blocks.insert(0, {'timestamp': 0.0})
 if 'timestamp' not in blocks[-1]:
     if 'LENGTH' not in globals():
@@ -170,10 +181,10 @@ def nextTimestamp(blocks, ix):
     while 'timestamp' not in blocks[ix]:
         if 'dialogue' in blocks[ix]:
             for line in blocks[ix]['dialogue']:
-                chars += len(line)
+                chars += len(line) + 30
         ix += 1
     return blocks[ix]['timestamp'], chars
-    
+
 #compute times for each block & line
 t = 0.0
 t2, chars = nextTimestamp(blocks, 1)
@@ -388,9 +399,9 @@ if MOVIE:
         cmd = "rm " + ORIG
         print cmd
         os.system(cmd)
-        cmd = "avconv -i " + AUDIO + " -i " + MOVIE + " -acodec libmp3lame -ab 256k " + ORIG
+        cmd = "avconv -i " + AUDIO + " -i " + MOVIE + " -acodec libmp3lame -ab 256k -vb 500k " + ORIG
         print cmd
         os.system(cmd)
         cmd = "rm " + MOVIE
         print cmd
-        os.system(cmd)
+##        os.system(cmd)
