@@ -404,4 +404,4 @@ if MOVIE:
         os.system(cmd)
         cmd = "rm " + MOVIE
         print cmd
-##        os.system(cmd)
+        os.system(cmd)
