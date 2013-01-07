@@ -96,6 +96,15 @@ except:
 blocks = []
 block = []
 
+#make time directives their own blocks
+i = 0
+while i < len(lines):
+    line = lines[i]
+    if line[:6] == "{time=":
+        if i+1 < len(lines):
+            lines.insert(i+1, "")
+    i += 1
+
 for line in lines:
     line = line.strip()
     line = cleanAscii(line)
