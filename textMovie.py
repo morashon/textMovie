@@ -181,7 +181,7 @@ def nextTimestamp(blocks, ix):
     while 'timestamp' not in blocks[ix]:
         if 'dialogue' in blocks[ix]:
             for line in blocks[ix]['dialogue']:
-                chars += len(line) + 30
+                chars += len(line)
         ix += 1
     return blocks[ix]['timestamp'], chars
 
