@@ -270,7 +270,7 @@ if SHOW:
     print "\n" * 60
     print "---------------BEGIN------------------"
 
-    T = time.time()
+    T = time.time() + .25
     if SHOW != True:
         T -= SHOW
 
@@ -305,7 +305,7 @@ if SHOW:
                 print "%.2f" % block['time'],
                 print "------UNKNOWN BLOCK TYPE-------"
                 print block
-        if SHOW==True:
+        if SHOW==True or time.time() - T < SHOW:
             time.sleep(.1)
 
 if MOVIE:
