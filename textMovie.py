@@ -261,6 +261,8 @@ if PRINT:
 
 if SHOW:
     cmd = "clear; xterm -e " + 'mplayer "' + AUDIO + '"&'
+    if SHOW != True:
+        cmd = cmd.replace("mplayer", "mplayer -ss " + str(SHOW))
     print cmd
     os.system(cmd)
 ##    time.sleep(.1)
@@ -269,6 +271,8 @@ if SHOW:
     print "---------------BEGIN------------------"
 
     T = time.time()
+    if SHOW != True:
+        T -= SHOW
 
     ix = 0
     while ix < len(blocks):
@@ -301,7 +305,8 @@ if SHOW:
                 print "%.2f" % block['time'],
                 print "------UNKNOWN BLOCK TYPE-------"
                 print block
-        time.sleep(.1)
+        if SHOW==True:
+            time.sleep(.1)
 
 if MOVIE:
     #let's make a movie! yay, yippie!
