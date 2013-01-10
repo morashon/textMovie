@@ -50,6 +50,8 @@ def splitLine(line, draw, font):
 def cleanAscii(s):
     t = ''
     for c in s:
+        if ord(c) == 0xa0:
+            c = ' '
         if ord(c) < 128:
             t += c
     return t
