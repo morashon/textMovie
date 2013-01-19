@@ -375,6 +375,7 @@ if MOVIE:
                     line = block['direction'][j]
                     lines = splitLine(line, draw, font)
                     for line in lines:
+                        if DEBUG: print line
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
                             exit()
