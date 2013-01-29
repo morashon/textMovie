@@ -379,7 +379,8 @@ if MOVIE:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
                             exit()
-                        draw.text((LEFTOFFSET, k * FONTHEIGHT), line, font=font, fill="black")
+                        if line != "~":
+                            draw.text((LEFTOFFSET, k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
@@ -402,7 +403,8 @@ if MOVIE:
                         if k * FONTHEIGHT > (HEIGHT-FONTHEIGHT-4):
                             print "ERROR -- too much text"
                             exit()
-                        draw.text((LEFTOFFSET, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
+                        if line != "~":
+                            draw.text((LEFTOFFSET, HEIGHT + k * FONTHEIGHT), line, font=font, fill="black")
                         k += 1
                 pim2 = pim.resize((WIDTH, HEIGHT), Image.BILINEAR)
                 cv.SetData(cvim, pim2.tostring())
