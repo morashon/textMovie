@@ -43,14 +43,10 @@ def vote(*data):
         if (i % 44100) == 0:
             print "processing sample", i, "of", n, "%3.2f%%" % (float(i * 100) / n)
         for ch in range(2):
-            samps = []
-            for j in range(3):
-                samp = data[j][i][ch]
-                samps.append(samp)
-            if samps[0] == samps[1] == samps[2]:        #speedup
+            if data[0][i][ch] == data[1][i][ch] == data[2][i][ch]:        #speedup
                 eqs += 1
                 continue
-            med, span = medianAndSpan(*samps)
+            med, span = medianAndSpan(data[0][i][ch], data[1][i][ch], data[2][i][ch])
             if span < THRESH:
 ##                print "medianAndSpan:", i, samps[0], samps[1], samps[2], "med:", med, "span:", span
                 votes += 1
