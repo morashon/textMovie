@@ -12,7 +12,8 @@ import os, sys
 from scipy.io import wavfile
 
 MAXSAMPLES=None#44100*30
-THRESH = 43
+THRESH = 15
+WAIT = 44100 * 3
 
 ##wav = wavfile.read("../seg1/export/seg1a_Session.wav")
 ##print len(wav), type(wav[1][0][0])
@@ -39,9 +40,12 @@ def vote(*data):
     votes = 0                   #contested (non-unanimous) votes
     maxspan = 0
     n = len(d1[:MAXSAMPLES])
+    lastbad = -WAIT - 1
     for i in range(n):
         if (i % 44100) == 0:
             print "processing sample", i, "of", n, "%3.2f%%" % (float(i * 100) / n)
+        if i < (lastbad + WAIT):
+            continue
         for ch in range(2):
             if data[0][i][ch] == data[1][i][ch] == data[2][i][ch]:        #speedup
                 eqs += 1
@@ -55,6 +59,7 @@ def vote(*data):
                     maxspan = span
                 continue
             fails += 1
+            lastbad = i
     return votes, fails, eqs, maxspan
 
 fn1 = sys.argv[1]
