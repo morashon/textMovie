@@ -12,7 +12,7 @@ import os, sys
 from scipy.io import wavfile
 
 MAXSAMPLES=None#44100*30
-THRESH = 15
+THRESH = 30
 WAIT = 44100 * 3
 
 ##wav = wavfile.read("../seg1/export/seg1a_Session.wav")
