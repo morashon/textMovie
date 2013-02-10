@@ -58,6 +58,7 @@ def vote(*data):
                 if span > maxspan:
                     maxspan = span
                 continue
+            print "FAIL at sample:", i
             fails += 1
             lastbad = i
     return votes, fails, eqs, maxspan
