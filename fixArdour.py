@@ -38,6 +38,8 @@ def vote(*data):
             for j in range(3):
                 samp = data[j][i][ch]
                 samps.append(samp)
+            if samps[0] == samps[1] == samps[2]:        #speedup
+                continue
             if cmp(samps[0], samps[1]) and cmp(samps[1], samps[2]):
                 continue
             if cmp(samps[0], samps[1]) or cmp(samps[0], samps[2]):
