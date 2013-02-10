@@ -11,8 +11,8 @@ No I'm not kidding
 import os, sys
 from scipy.io import wavfile
 
-MAXSAMPLES=None #44100*20
-THRESH = 3
+MAXSAMPLES=44100*30
+THRESH = 100
 
 ##wav = wavfile.read("../seg1/export/seg1a_Session.wav")
 ##print len(wav), type(wav[1][0][0])
@@ -23,6 +23,13 @@ def cmp(a, b):
         return False
     return True
 
+def medianAndSpan(a, b, c):
+    if a >= b >= c or c >= b >= a:
+        return b, abs(c-a)
+    if b >= c >= a or a >= c >= b:
+        return c, abs(b-a)
+    return a, abs(c-b)
+
 #
 # take 3 sample sets; make the first one a vote between all 3
 #
@@ -32,7 +39,7 @@ def vote(*data):
     n = len(d1[:MAXSAMPLES])
     for i in range(n):
         if (i % 44100) == 0:
-            print "processing sample", i, "of", n
+            print "processing sample", i, "of", n, "%3.2f%%" % (float(i * 100) / n)
         for ch in range(2):
             samps = []
             for j in range(3):
@@ -40,14 +47,10 @@ def vote(*data):
                 samps.append(samp)
             if samps[0] == samps[1] == samps[2]:        #speedup
                 continue
-            if cmp(samps[0], samps[1]) and cmp(samps[1], samps[2]):
-                continue
-            if cmp(samps[0], samps[1]) or cmp(samps[0], samps[2]):
+            med, span = medianAndSpan(*samps)
+            if span < THRESH:
                 votes += 1
-                continue
-            if cmp(samps[1], samps[2]):
-                samps[0] = samps[1]
-                votes += 1
+                samps[0] = med
                 continue
             fails += 1
     return votes, fails
