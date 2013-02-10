@@ -12,7 +12,7 @@ import os, sys
 from scipy.io import wavfile
 
 MAXSAMPLES=None#44100*30
-THRESH = 100
+THRESH = 43
 
 ##wav = wavfile.read("../seg1/export/seg1a_Session.wav")
 ##print len(wav), type(wav[1][0][0])
@@ -25,17 +25,19 @@ def cmp(a, b):
 
 def medianAndSpan(a, b, c):
     if a >= b >= c or c >= b >= a:
-        return b, abs(c-a)
+        return b, min(abs(b-a), abs(b-c))
     if b >= c >= a or a >= c >= b:
-        return c, abs(b-a)
-    return a, abs(c-b)
+        return c, min(abs(c-a), abs(c-b))
+    return a, min(abs(a-b), abs(a-c))
 
 #
 # take 3 sample sets; make the first one a vote between all 3
 #
 def vote(*data):
+    eqs = 0
     fails = 0                   #total fails -- leave alone but report
     votes = 0                   #contested (non-unanimous) votes
+    maxspan = 0
     n = len(d1[:MAXSAMPLES])
     for i in range(n):
         if (i % 44100) == 0:
@@ -46,14 +48,18 @@ def vote(*data):
                 samp = data[j][i][ch]
                 samps.append(samp)
             if samps[0] == samps[1] == samps[2]:        #speedup
+                eqs += 1
                 continue
             med, span = medianAndSpan(*samps)
             if span < THRESH:
+##                print "medianAndSpan:", i, samps[0], samps[1], samps[2], "med:", med, "span:", span
                 votes += 1
-                samps[0] = med
+                data[0][i][ch] = med
+                if span > maxspan:
+                    maxspan = span
                 continue
             fails += 1
-    return votes, fails
+    return votes, fails, eqs, maxspan
 
 fn1 = sys.argv[1]
 fn2 = sys.argv[2]
@@ -78,10 +84,12 @@ for d in [d1, d2, d3]:
         exit()
 
 print "voting:"
-votes, fails = vote(d1, d2, d3)
+votes, fails, eqs, mx = vote(d1, d2, d3)
+print "samples equal:", eqs
 print "complete fails:", fails
 print "contested votes:", votes
-print "total samples:", len(d1)
+print "max span (not fail):", mx
+print "total samples:", len(d1) * 2
 
 print "writing"
 wavfile.write(fout, 44100, d1)
