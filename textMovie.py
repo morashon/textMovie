@@ -84,6 +84,16 @@ while i < len(sys.argv):
     print "setting", opt.upper(), "=", val
     globals()[opt.upper()] = val
 
+if SCRIPT and MOVIE:
+    ts = os.path.getmtime(SCRIPT)
+    tm = os.path.getmtime(MOVIE)
+    print "script mtime:", ts
+    print "movie mtime:", tm
+    print "time diff:", ts - tm
+    if ts - tm < 2.0:
+        print "movie and script timestamps are very close; not recompiling"
+        exit()
+
 try:
     f = open(SCRIPT)
     lines = f.readlines()
