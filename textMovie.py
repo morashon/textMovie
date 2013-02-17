@@ -87,11 +87,11 @@ while i < len(sys.argv):
 if SCRIPT and MOVIE:
     ts = os.path.getmtime(SCRIPT)
     tm = os.path.getmtime(MOVIE)
-    print "script mtime:", ts
-    print "movie mtime:", tm
-    print "time diff:", ts - tm
-    if ts - tm < 2.0:
-        print "movie and script timestamps are very close; not recompiling"
+##    print "script mtime:", ts
+##    print "movie mtime:", tm
+##    print "time diff:", tm - ts
+    if tm > ts:
+        print "movie later than script; not recompiling"
         exit()
 
 try:
