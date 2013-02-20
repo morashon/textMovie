@@ -84,14 +84,12 @@ while i < len(sys.argv):
     print "setting", opt.upper(), "=", val
     globals()[opt.upper()] = val
 
-if SCRIPT and MOVIE:
+if SCRIPT and MOVIE and AUDIO:
     ts = os.path.getmtime(SCRIPT)
     tm = os.path.getmtime(MOVIE)
-##    print "script mtime:", ts
-##    print "movie mtime:", tm
-##    print "time diff:", tm - ts
-    if tm > ts:
-        print "movie later than script; not recompiling"
+    ta = os.path.getmtime(AUDIO)
+    if tm > ts and tm > ta:
+        print "movie later than script and audio; not recompiling"
         exit()
 
 try:
