@@ -85,13 +85,15 @@ while i < len(sys.argv):
     globals()[opt.upper()] = val
 
 if SCRIPT and MOVIE and AUDIO:
-    ts = os.path.getmtime(SCRIPT)
-    tm = os.path.getmtime(MOVIE)
-    ta = os.path.getmtime(AUDIO)
-    if tm > ts and tm > ta:
-        print "movie later than script and audio; not recompiling"
-        exit()
-
+    try:
+        ts = os.path.getmtime(SCRIPT)
+        tm = os.path.getmtime(MOVIE)
+        ta = os.path.getmtime(AUDIO)
+        if tm > ts and tm > ta:
+            print "movie later than script and audio; not recompiling"
+            exit()
+    except:
+        print "some files missing; recompiling"
 try:
     f = open(SCRIPT)
     lines = f.readlines()
@@ -328,8 +330,11 @@ if MOVIE:
         print "intermediate file:", MOVIE
         print "final output file:", ORIG
 
-    FOURCC = "DIVX"
-##    FOURCC = "HFYU"
+##    FOURCC = "DIVX"
+    FOURCC = "MPEG"
+    if FOURCC == "MPEG" and FPS < 24:
+        print "MPEG fourCC requires FPS >= 24"
+        FPS = 24
     F4CC = cv.CV_FOURCC(FOURCC[0], FOURCC[1], FOURCC[2], FOURCC[3])    
 
     cvw = cv2.VideoWriter()
