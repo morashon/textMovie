@@ -20,7 +20,6 @@ PRINT = False
 MOVIE = False
 WIDTH = 640
 HEIGHT = 480
-FPS = 24
 FONTHEIGHT = 44
 LEFTOFFSET = 20
 STALEDIR = 10
@@ -28,6 +27,8 @@ DIRCOLOR = "#dddddd"
 AUDIO = None
 DEBUG = False
 LINEPAUSE = 0.4
+FPS = 12
+FOURCC = "DIVX"
 
 def splitLine(line, draw, font):
     def width(s):
@@ -330,8 +331,6 @@ if MOVIE:
         print "intermediate file:", MOVIE
         print "final output file:", ORIG
 
-##    FOURCC = "DIVX"
-    FOURCC = "MPEG"
     if FOURCC == "MPEG" and FPS < 24:
         print "MPEG fourCC requires FPS >= 24"
         FPS = 24
